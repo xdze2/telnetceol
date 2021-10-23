@@ -3,7 +3,8 @@ from setuptools import find_packages, setup
 
 install_requires = [
     'blessed',
-    'click',
+    'rich',
+    'textual'
 ]
 
 setup(

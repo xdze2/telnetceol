@@ -31,16 +31,13 @@ def send(ctx, command):
     click.echo('')
 
 
+from telnetceol.livescreen import ClockApp
+
 @cli.command(short_help='Show live screen')
 @click.pass_context
 def show(ctx):
-    # """Send over Telnet the given command and print response."""
-    while True:
-        response = ctx.obj['telnet_client'].request("NSE")
-        click.echo(format_response(response))
-        click.echo('')
-        time.sleep(0.5)
-
+    """Show live screen info."""
+    ClockApp.run()
 
 
 # @cli.command()

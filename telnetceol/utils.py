@@ -1,6 +1,7 @@
 import telnetlib
 from typing import List
 
+
 class TelnetClient:
     def __init__(self, host_ip: str):
         self.telnet = telnetlib.Telnet(host_ip, 23)
