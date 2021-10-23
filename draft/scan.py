@@ -10,13 +10,13 @@ reponse = telnet.request('SI?')
 print(reponse)
 
 
-alphabet = "ABGRPSSI? "
+alphabet = "AZERTYUIOPQSDFGHJKLMWXCVBN"
 
 print('scan -')
 for cmd in combinations_with_replacement(alphabet, 3):
     cmd = ''.join(cmd)
     reponse = telnet.request(cmd)
+    print(cmd, end='\r')
     if reponse:
+        print('\n')
         print(cmd, reponse)
-    else:
-        print(cmd, end='\r')

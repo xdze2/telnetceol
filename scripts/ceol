@@ -1,7 +1,10 @@
 #!/usr/bin/python
 
 import click
-from utils import TelnetClient, format_response
+import time
+
+from telnetceol.utils import TelnetClient, format_response
+
 
 @click.group()
 @click.option('--ip', default="192.168.0.11", help='IP address', show_default=True)
@@ -27,6 +30,16 @@ def send(ctx, command):
     click.echo(format_response(response))
     click.echo('')
 
+
+@cli.command(short_help='Show live screen')
+@click.pass_context
+def show(ctx):
+    # """Send over Telnet the given command and print response."""
+    while True:
+        response = ctx.obj['telnet_client'].request("NSE")
+        click.echo(format_response(response))
+        click.echo('')
+        time.sleep(0.5)
 
 
 

@@ -1,5 +1,5 @@
 import telnetlib
-
+from typing import List
 
 class TelnetClient:
     def __init__(self, host_ip: str):
@@ -17,3 +17,12 @@ class TelnetClient:
             lines.append(line)
 
         return lines
+
+    def listen(self):
+        while True:
+            line = self.telnet.read_until(b"\r", timeout=1.0)
+            print(line)
+
+
+def format_response(response: List[bytes]) -> str:
+    return '\n'.join([line.decode("utf-8").strip() for line in response])
