@@ -1,34 +1,21 @@
-from datetime import datetime
-
-import rich
-from rich.align import Align
-
-from textual.app import App
-from textual.widget import Widget
+import time
+from rich.live import Live
+from rich import print
+from rich.panel import Panel
 
 
-from telnetceol.utils import TelnetClient
+class LiveScreen:
+    def __init__(self, telnet_client=None):
+        self.telnet_client = telnet_client
 
-telnet_client = TelnetClient('192.168.0.11')
-
-def get_screen():
-    response = telnet_client.request("NSE")
-    return response
-
-
-class Clock(Widget):
-    def on_mount(self):
-        self.set_interval(1, self.refresh)
+    def run(self):
+        with Live(refresh_per_second=4) as live:
+            while True:
+                time.sleep(0.4)  # arbitrary delay
+                live.update(self.render())
 
     def render(self):
-        # time = datetime.now().strftime("%c")
-        response = [line.decode("utf-8").strip()[4:] for line in get_screen()]
-        tx = rich.text.Text('\n'.join(response)) 
-        return Align.center(tx, vertical="middle")
-
-
-class ClockApp(App):
-    async def on_mount(self):
-        await self.view.dock(Clock())
-
-
+        raw_response = self.telnet_client.request("NSE")
+        response = [line.decode("utf-8").strip()[4:] for line in raw_response if line]
+        tx = Panel("\n".join(response), title="Denon Ceol", width=50, height=9 + 2)
+        return tx
