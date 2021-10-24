@@ -31,6 +31,20 @@ def send(ctx, command):
     click.echo('')
 
 
+@cli.command(short_help='toggle mute')
+@click.pass_context
+def mute(ctx):
+    """Toggle mute on/off."""
+    actual_state = ctx.obj['telnet_client'].request("MU?")
+    actual_state = format_response(actual_state)
+    if "OFF" in actual_state:
+        response = ctx.obj['telnet_client'].request("MUON")
+    else:
+        response = ctx.obj['telnet_client'].request("MUOFF")
+    click.echo(actual_state + ' > ' + format_response(response))
+    click.echo('')
+
+
 from telnetceol.livescreen import LiveScreen
 
 @cli.command(short_help='Show live screen')
