@@ -3,15 +3,19 @@ from rich.live import Live
 from rich import print
 from rich.panel import Panel
 
+from rich.console import Console
+from rich.prompt import Prompt
 
+my_console = Console()
 class LiveScreen:
     def __init__(self, telnet_client=None):
         self.telnet_client = telnet_client
 
     def run(self):
-        with Live(refresh_per_second=4) as live:
+        with Live(refresh_per_second=4, console=my_console) as live:
+            
             while True:
-                time.sleep(0.4)  # arbitrary delay
+                time.sleep(0.8)
                 live.update(self.render())
 
     def render(self):
