@@ -3,6 +3,11 @@
 import click
 import time
 
+
+from rich import align, print, style
+from rich.panel import Panel, Text
+
+
 from telnetceol.utils import TelnetClient, format_response
 
 
@@ -44,6 +49,22 @@ def mute(ctx):
     click.echo(actual_state + ' > ' + format_response(response))
     click.echo('')
 
+
+@cli.command(short_help='display clock')
+@click.pass_context
+def clock(ctx):
+    """Display clock."""
+    response = ctx.obj['telnet_client'].request("CLK")
+    clock_time = format_response(response).replace('CLK', '')
+    clock_time = f'{clock_time[0:2]}:{clock_time[2:]}'
+    clk_panel = Panel(
+        Text(clock_time, justify="center", style='bold'),
+        padding=(0, 3),
+        expand=False,
+    )
+
+    print(clk_panel)
+    click.echo('')
 
 from telnetceol.livescreen import LiveScreen
 
