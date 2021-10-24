@@ -66,6 +66,23 @@ def clock(ctx):
     print(clk_panel)
     click.echo('')
 
+
+@cli.command(short_help='Once timer clock')
+@click.pass_context
+def once(ctx):
+    """Display clock."""
+    response = ctx.obj['telnet_client'].request("TF?")
+    clock_time = format_response(response).replace('CLK', '')
+    clock_time = f'{clock_time[0:2]}:{clock_time[2:]}'
+    clk_panel = Panel(
+        Text(clock_time, justify="center", style='bold'),
+        padding=(0, 3),
+        expand=False,
+    )
+
+    print(clk_panel)
+    click.echo('')
+
 from telnetceol.livescreen import LiveScreen
 
 @cli.command(short_help='Show live screen')
